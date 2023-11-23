@@ -10,7 +10,7 @@ import * as L from 'leaflet';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  private map!: L.Map;
+  private map: L.Map | any;
   private centroid: L.LatLngExpression = [35.7219, 51.3347]; // Tehran
 
   ngOnInit(): void {
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   private initMap(): void {
     this.map = L.map('map', {
       center: this.centroid,
-      zoom: 12
+      zoom: 15
     });
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,13 +30,13 @@ export class HomeComponent implements OnInit {
     });
 
     // create 5 random jitteries and add them to map
-    // const jittery = Array(5).fill(this.centroid).map(
-    //   x => [x[0] + (Math.random() - .5) / 10, x[1] + (Math.random() - .5) / 10]
-    // ).map(
-    //   x => L.marker(x as L.LatLngExpression)
-    // ).forEach(
-    //   x => x.addTo(this.map)
-    // );
+    const jittery = Array(5).fill(this.centroid).map(
+      x => [x[0] + (Math.random() - .5) / 10, x[1] + (Math.random() - .5) / 10]
+    ).map(
+      x => L.marker(x as L.LatLngExpression)
+    ).forEach(
+      x => x.addTo(this.map)
+    );
 
     tiles.addTo(this.map);
   }
