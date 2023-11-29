@@ -10,34 +10,20 @@ import * as L from 'leaflet';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  private map: L.Map | any;
+  map: any;
   private centroid: L.LatLngExpression = [35.7219, 51.3347]; // Tehran
 
   ngOnInit(): void {
-    this.initMap();
+    this.loadMap();
   }
 
-  private initMap(): void {
-    this.map = L.map('map', {
-      center: this.centroid,
-      zoom: 15
-    });
-
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  private loadMap(): void {
+    this.map = L.map('map').setView([0, 0], 1);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
-      minZoom: 10,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
+      tileSize: 512,
 
-    // create 5 random jitteries and add them to map
-    const jittery = Array(5).fill(this.centroid).map(
-      x => [x[0] + (Math.random() - .5) / 10, x[1] + (Math.random() - .5) / 10]
-    ).map(
-      x => L.marker(x as L.LatLngExpression)
-    ).forEach(
-      x => x.addTo(this.map)
-    );
-
-    tiles.addTo(this.map);
+    }).addTo(this.map);
   }
 }
